@@ -1,0 +1,113 @@
+<form (ngSubmit)="userForm.form.valid && save()" #userForm="ngForm">
+  <div class="card p-fluid">
+    <div class="field">
+      <label htmlFor="name1">Email</label>
+      <input
+        pInputText
+        id="name1"
+        #name="ngModel"
+        name="name"
+        [(ngModel)]="user.email"
+        type="text"
+        maxlength="50"     
+        #txtEmail="ngModel"
+        email="true"
+     
+      />
+      <p-message
+        severity="error"
+        text="email is not valid."
+        *ngIf="
+          (txtEmail.touched || userForm.submitted) &&
+          txtEmail.invalid &&
+          txtEmail.hasError('email')
+        "
+      ></p-message>
+    </div>
+    <div class="field">
+      <label for="password1" class="block text-900 font-medium text-xl mb-2"
+        >Password</label
+      >
+      <p-password
+        id="password1"
+        name="password"
+        [(ngModel)]="user.password"
+        placeholder="Password"
+        [toggleMask]="true"
+        styleClass="w-full mb-3"
+        #txtPassword="ngModel"
+        required
+      ></p-password>
+      <p-message
+        severity="error"
+        text="password is required"
+        *ngIf="
+          (txtPassword.touched || userForm.submitted) &&
+          txtPassword.invalid &&
+          txtPassword.hasError('required')
+        "
+      ></p-message>
+    </div>
+    <div class="field">
+      <label htmlFor="role1">Role</label>
+
+      <!-- <p-dropdown
+        [options]="tenants"
+        [(ngModel)]="user!.tenant_id"
+        placeholder="Select a tenant"
+        #tenant="ngModel"
+        name="tenant"
+        optionValue="id"
+        optionLabel="name"
+        [required]="true"
+      ></p-dropdown> -->
+      <p-multiSelect
+        id="roles1"
+        #roles="ngModel"
+        name="roles"
+        placeholder="Select roles"
+        [options]="LIST_ROLE"
+        [(ngModel)]="user.roles"
+        optionLabel="name"
+        [required]="true"
+      ></p-multiSelect>
+      <p-message
+        severity="error"
+        text="role is required"
+        *ngIf="
+          (roles.touched || userForm.submitted) &&
+          roles.invalid &&
+          roles.hasError('required')
+        "
+      ></p-message>
+    </div>
+
+    <div class="field field-checkbox">
+      <p-checkbox
+        [(ngModel)]="isUserSource"
+        name="AzureAdB2c"
+        [binary]="true"
+      >
+      </p-checkbox
+      ><label htmlFor="isUserSource">Is AzureAdB2c</label>
+    </div>
+
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      pRipple
+      label="Save"
+      class="mr-2 mb-2"
+      type="submit"
+    ></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Cancel"
+      (click)="ref.close()"
+      class="p-button-secondary mr-2 mb-2"
+    ></button>
+  </div>
+</form>

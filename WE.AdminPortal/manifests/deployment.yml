@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: weadminportal 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weadminportal
+  template:
+    metadata:
+      labels:
+        app: weadminportal 
+    spec:
+      containers:
+        - name: weadminportal 
+          image: acrwedev111.azurecr.io/weadminportal:latest
+          ports:
+          - containerPort: 80

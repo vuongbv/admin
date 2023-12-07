@@ -1,0 +1,56 @@
+<div class="layout-topbar">
+  <button
+    #menubutton
+    class="p-link layout-menu-button layout-topbar-button"
+    (click)="onMenuToggle()"
+  >
+    <i
+      class="pi"
+      [ngClass]="{
+        'pi-angle-double-left': showMenu,
+        'pi-angle-double-right': !showMenu
+      }"
+    ></i>
+  </button>
+  <a class="layout-topbar-logo ml-2" routerLink="">
+    <img src="assets/layout/images/we.png" alt="logo" />
+    <span>Tenant Management</span>
+  </a>
+  <!-- <a class="layout-topbar-logo ml-2" >
+    Solar Energy Management
+  </a> -->
+
+  <button
+    #topbarmenubutton
+    class="p-link layout-topbar-menu-button layout-topbar-button"
+    (click)="layoutService.showProfileSidebar()"
+  >
+    <i class="pi pi-ellipsis-v"></i>
+  </button>
+
+  <div
+    #topbarmenu
+    class="layout-topbar-menu"
+    [ngClass]="{
+      'layout-topbar-menu-mobile-active':
+        layoutService.state.profileSidebarVisible
+    }"
+  >
+    <a class="top-bar-panel ml-2">
+      {{ userName?.email }}
+      <button
+        class="p-link layout-topbar-button mr-2"
+        label="Show"
+        (click)="menu.toggle($event)"
+      >
+        <img src="assets/layout/images/user.svg">
+        
+      </button> 
+      <p-tieredMenu #menu [model]="items" [popup]="true"></p-tieredMenu>
+    </a>
+    <!-- <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
+      <i class="pi pi-cog"></i>
+      <span>Settings</span>
+    </button> -->
+  </div>
+</div>

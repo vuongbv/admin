@@ -1,0 +1,536 @@
+<form (ngSubmit)="widgetForm.form.valid && save()" #widgetForm="ngForm">
+  <div class="flex justify-content-between flex-column sm:flex-row grid">
+    <div class="field lg:col-4 md:col md:col">
+      <label htmlFor="source_name"> Name</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.widget_name"
+        name="widget_name"
+        #widget_name="ngModel"
+        required
+      />
+      <p-message
+        severity="error"
+        text="widget name is required"
+        *ngIf="
+          (widget_name.touched || widgetForm.submitted) &&
+          widget_name.invalid &&
+          widget_name.hasError('required')
+        "
+      ></p-message>
+    </div>
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">Widget under title description</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.widget_under_title_description"
+        name="widget_under_title_description"
+        #widget_under_title_description="ngModel"
+      />
+    </div>
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">Widget Template</label>
+      <p-dropdown
+        [options]="widgetTemplates"
+        placeholder="Select a widget type"
+        name="widgetTemplate"
+        (onChange)="onChangeTemplate($event.value)"
+        optionLabel="template_name"
+      ></p-dropdown>
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="name1">Source Id</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.source_id"
+        name="source_id"
+        #source_id="ngModel"
+      />
+      <p-message
+        severity="error"
+        text="source id is required"
+        *ngIf="
+          (source_id.touched || widgetForm.submitted) &&
+          source_id.invalid &&
+          source_id.hasError('required')
+        "
+      ></p-message>
+    </div>
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="name1">Ref Source Id</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.ref_source_id"
+        name="ref_source_id"
+        #ref_source_id="ngModel"
+      />
+    </div>
+    <div class="field lg:col-4 md:col">
+      <label>Data point</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.data_point"
+        name="data_point"
+        #data_point="ngModel"
+      />
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label>Data path</label>
+
+      <input
+        pInputText
+        [(ngModel)]="widget.data_path"
+        name="data_path"
+        #data_path="ngModel"
+      />
+    </div>
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">Data Frequency</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.data_frequency"
+        name="data_frequency"
+        #data_frequency="ngModel"
+      />
+    </div>
+    <div class="field lg:col-4 md:col">
+      <label>Pin Number</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.pin_number"
+        name="pin_number"
+        #pin_number="ngModel"
+      />
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label>Line Name</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.line_name"
+        name="line_name"
+        #line_name="ngModel"
+      />
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label>Unit</label>
+      <input pInputText [(ngModel)]="widget.unit" name="unit" #unit="ngModel" />
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label>Sub Id</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.sub_id"
+        name="sub_id"
+        #sub_id="ngModel"
+      />
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">Widget Type</label>
+      <p-dropdown
+        [options]="widgetTypes"
+        [(ngModel)]="widget.widget_type"
+        placeholder="Select a widget type"
+        #widget_type="ngModel"
+        name="widget_type"
+        optionValue="value"
+        optionLabel="key"
+        [required]="true"
+      ></p-dropdown>
+      <p-message
+        severity="error"
+        text="Widget Type is required"
+        *ngIf="
+          (widget_type.touched || widgetForm.submitted) &&
+          widget_type.invalid &&
+          widget_type.hasError('required')
+        "
+      ></p-message>
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">Chart Type</label>
+      <p-dropdown
+        [options]="chartTypes"
+        [(ngModel)]="widget.chart_type"
+        placeholder="Select a Chart type"
+        #chart_type="ngModel"
+        name="chart_type"
+        optionValue="value"
+        optionLabel="key"
+      ></p-dropdown>
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">data aggregate type</label>
+      <p-dropdown
+        [options]="aggregateTypes"
+        [(ngModel)]="widget.data_aggregate_type"
+        placeholder="Select a data aggregate type"
+        #data_aggregate_type="ngModel"
+        name="data_aggregate_type"
+        optionValue="value"
+        optionLabel="key"
+      ></p-dropdown>
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">periodicity</label>
+      <p-dropdown
+        [options]="periodicities"
+        [(ngModel)]="widget.periodicity"
+        placeholder="Select a periodicity"
+        #periodicity="ngModel"
+        name="periodicity"
+        optionValue="value"
+        optionLabel="key"
+      ></p-dropdown>
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">Data Result Type</label>
+      <p-dropdown
+        [options]="resultTypes"
+        [(ngModel)]="widget.data_result_type"
+        placeholder="Select a data result type"
+        #data_result_type="ngModel"
+        name="data_result_type"
+        optionValue="value"
+        optionLabel="key"
+      ></p-dropdown>
+    </div>
+    
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">workspace id</label>
+      <input
+        pInputText
+        [(ngModel)]="widget.workspace_id"
+        name="workspace_id"
+        #workspace_id="ngModel"
+      />
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">Tab Name</label>
+      <p-dropdown
+      [options]="tabs"
+      [(ngModel)]="widget.tab_name"
+      placeholder="Select a Tab Name"
+      #tab_name="ngModel"
+      name="tab_name"
+      optionValue="id"
+      optionLabel="name"
+    ></p-dropdown>
+    </div>
+
+    <div class="field lg:col-4 md:col">
+      <label htmlFor="source_type">hidden</label>
+      <p-checkbox
+        [(ngModel)]="widget.is_hidden"
+        name="is_hidden"
+        [binary]="true"
+      ></p-checkbox>
+    </div>
+
+    <div
+      class="field lg:col-12 md:col"
+      *ngIf="widget.widget_type === 'SingleValue'"
+    >
+      <label htmlFor="source_type">Upload data icon</label>
+      <p-fileUpload
+        mode="advanced"
+        chooseLabel="Choose"
+        accept="image/*"
+        [auto]="true"
+        (onSelect)="onSelect($event)"
+      ></p-fileUpload>
+      <div *ngIf="widget.widget_data_icon" class="mt-2">
+        <span class="mr-2">Icon Uploaded</span>
+        <img [src]="dataIcon" />
+        <p-button
+          type="button"
+          pRipple
+          icon="pi pi-trash"
+          styleClass="p-button-rounded p-button-text p-button-danger"
+          (click)="onDeleteIcon()"
+        ></p-button>
+      </div>
+    </div>
+
+    <div class="field lg:col-12 md:col md:col">
+      <label htmlFor="widget_description">Description</label>
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        [(ngModel)]="widget.widget_description"
+        name="widget_description"
+        #widget_description="ngModel"
+      ></textarea>
+    </div>
+
+    <div class="field lg:col-12 md:col">
+      <label htmlFor="name1">HTML</label>
+      <editor
+        [init]="HTMLConfig"
+        [(ngModel)]="widget.html_template"
+        apiKey="9meyimcgiv2a2umaee7jit0yom0tn3iyuj7xa4beb5zjlm4n"
+        name="html_template"
+      ></editor>
+    </div>
+
+    <div class="lg:col-12">
+      <label
+        >Setting (
+        <span class="mr-2">Is Visible</span>
+        <p-checkbox
+          [(ngModel)]="isShowSetting"
+          name="is_show_setting"
+          [binary]="true"
+        ></p-checkbox>
+        )
+      </label>
+    </div>
+
+    <div class="lg:col-12" *ngIf="isShowSetting">
+      <div class="lg:col-12 md:col card-border">
+        <div class="field lg:col-4 md:col">
+          <label>Decimal</label>
+          <input
+            pInputText
+            [(ngModel)]="widgetSetting.decimal_setting"
+            name="decimal_setting"
+            #decimal_setting="ngModel"
+          />
+        </div>
+
+        <div class="field lg:col-8 md:col">
+          <label>Power Bi Filter</label>
+          <input
+            pInputText
+            [(ngModel)]="widgetSetting.widget_power_bi_filter_setting"
+            name="widget_power_bi_filter_setting"
+            #decimal_setting="ngModel"
+          />
+        </div>
+        <div class="field lg:col-4 md:col">
+          <label>Formular</label>
+          <input
+            pInputText
+            [(ngModel)]="widgetSetting.formular"
+            name="formular"
+            #formular="ngModel"
+          />
+        </div>
+      </div>
+
+      <div class="flex field lg:col-12 md:col card-border">
+        <div class="field lg:col-12 md:col">
+          <label>Chart Style Setting</label>
+          <p-dropdown
+            [showClear]="true"
+            [options]="ChartStyleSettings"
+            [(ngModel)]="widgetSetting.chart_style_setting_id"
+            placeholder="Select a chart style"
+            name="chart_style_setting_id"
+            optionLabel="chart_style_setting.chart_type_name"
+            optionValue="id"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="field lg:col-12 md:col card-border">
+        <h4>Style</h4>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-plus"
+          type="button"
+          (click)="addStyle()"
+          class="p-button-secondary mr-2 mb-2"
+        ></button>
+        <div class="field lg:col-12 md:col">
+          <p-accordion>
+            <p-accordionTab
+              *ngFor="let style of styleList; let i = index"
+              [header]="styleHeaders[i]"
+            >
+              <div
+                class="flex justify-content-between flex-column sm:flex-row grid"
+              >
+                <div class="field lg:col-4 md:col">
+                  <label>Value From</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="style.value_from"
+                    name="style_value_from{{ i }}"
+                    #style_value_from[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Value To</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="style.value_to"
+                    name="style_value_to{{ i }}"
+                    #style_value_to[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Value Equal</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="style.value_equal"
+                    name="style_value_equal{{ i }}"
+                    #style_value_equal[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-8 md:col">
+                  <label>Operator</label>
+                  <p-dropdown
+                    [options]="operatortype"
+                    [(ngModel)]="style.operator"
+                    name="operator{{ i }}"
+                    optionLabel="key"
+                    optionValue="value"
+                  ></p-dropdown>
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Color</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="style.color"
+                    name="style_color{{ i }}"
+                    #style_color="ngModel"
+                  />
+                </div>
+              </div>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+      </div>
+
+      <div class="field lg:col-12 md:col card-border">
+        <h4>Additional Chart</h4>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-plus"
+          type="button"
+          (click)="addChart()"
+          class="p-button-secondary mr-2 mb-2"
+        ></button>
+        <div class="field lg:col-12 md:col">
+          <p-accordion>
+            <p-accordionTab
+              *ngFor="let chart of chartList; let i = index"
+              [header]="chartHeaders[i]"
+            >
+              <div
+                class="flex justify-content-between flex-column sm:flex-row grid"
+              >
+                <div class="field lg:col-4 md:col">
+                  <label>Indicator Name</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="chart.indicator_name"
+                    name="chart_indicator_name{{ i }}"
+                    #chart_indicator_name[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Source Id</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="chart.source_id"
+                    name="chart_source_id{{ i }}"
+                    #chart_source_id[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Data Point</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="chart.data_point"
+                    name="chart_data_point{{ i }}"
+                    #chart_data_point[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Data Path</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="chart.data_path"
+                    name="chart_data_path{{ i }}"
+                    #chart_data_path[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Unit</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="chart.unit"
+                    name="chart_unit{{ i }}"
+                    #chart_unit[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Sub Id</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="chart.sub_id"
+                    name="chart_sub_id{{ i }}"
+                    #chart_sub_id[i]="ngModel"
+                  />
+                </div>
+
+                <div class="field lg:col-4 md:col">
+                  <label>Color</label>
+                  <input
+                    pInputText
+                    [(ngModel)]="chart.color"
+                    name="chart_color{{ i }}"
+                    #chart_color="ngModel"
+                  />
+                </div>
+              </div>
+
+              <div class="p-dialog-footer">
+                <button
+                  pButton
+                  pRipple
+                  label="Remove"
+                  class="mr-2 mb-2"
+                  (click)="removeActionMultiChart(i)"
+                ></button>
+              </div>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      pRipple
+      label="Save"
+      class="mr-2 mb-2"
+      type="submit"
+    ></button>
+  </div>
+</form>

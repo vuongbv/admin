@@ -1,0 +1,67 @@
+# Deploy to Azure Kubernetes Service
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- none
+
+resources:
+- repo: self
+
+variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '85114751-dc3f-467e-a30e-420372b326ff'
+  imageRepository: 'adminportal-prod'
+  containerRegistry: 'acrgtechpprod.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  major: '0'
+  minor: '0'
+  tag: 'latest'
+  imagePullSecret: 'acrgtechpprod-adminportal-auth'
+  k8snamespace: 'adminportal'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+#  # Name of the new namespace being created to deploy the PR changes.
+#  k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
+
+stages:
+- stage: Deploy
+  displayName: Deploy stage
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'prod-env-aks-gtech-apps.adminportal'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              namespace: $(k8snamespace)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+#          - script: cd $(Pipeline.Workspace)/s/manifests && ls
+#            displayName: Cloning Manifest Files From Repo
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              namespace: $(k8snamespace)
+              manifests: |
+                $(Pipeline.Workspace)/s/manifests/prod/deployment.yml
+                $(Pipeline.Workspace)/s/manifests/prod/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)

@@ -1,0 +1,186 @@
+<form
+  (ngSubmit)="groupForm.form.valid && save()"
+  #groupForm="ngForm"
+  novalidate
+>
+  <div class="card p-fluid">
+    <div class="field">
+      <label htmlFor="name1">Name</label>
+      <input
+        pInputText
+        id="name1"
+        #name="ngModel"
+        name="name"
+        [(ngModel)]="panel.panel_name"
+        type="text"
+        maxlength="50"
+        required
+      />
+      <p-message
+        severity="error"
+        text="Name is required"
+        *ngIf="
+          (name.touched || groupForm.submitted) &&
+          name.invalid &&
+          name.hasError('required')
+        "
+      ></p-message>
+    </div>
+    <div class="field">
+      <label htmlFor="role1">Role</label>
+
+      <p-multiSelect
+        id="roles1"
+        #roles="ngModel"
+        name="roles"
+        placeholder="Select roles"
+        [options]="LIST_ROLE"
+        [(ngModel)]="panel.roles"
+        optionValue="name"
+        optionLabel="name"
+        [required]="true"
+      ></p-multiSelect>
+      <p-message
+        severity="error"
+        text="role is required"
+        *ngIf="
+          (roles.touched || groupForm.submitted) &&
+          roles.invalid &&
+          roles.hasError('required')
+        "
+      ></p-message>
+    </div>
+    <div class="field">
+      <label htmlFor="description">Group</label>
+      <p-dropdown
+        [options]="groups"
+        [(ngModel)]="panel.group_id"
+        placeholder="Select a group"
+        name="group_id"
+        optionValue="id"
+        [showClear]="true"
+      >
+        <ng-template let-group pTemplate="selectedItem">
+          <div>
+            <div>{{ group.name + " -- " + group.app_name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-group pTemplate="item">
+          <div>
+            <div>{{ group.name + " -- " + group.app_name }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <div class="field">
+      <label htmlFor="description">Device</label>
+      <p-multiSelect
+        [options]="devices"
+        [(ngModel)]="panel.device_id"
+        placeholder="Select a device"
+        name="device_id"
+        optionValue="source_id"
+        optionLabel="name"
+      ></p-multiSelect>
+    </div>
+    <div class="card">
+      <h4>Tab</h4>
+      <button
+        pButton
+        pRipple
+        icon="pi pi-plus"
+        type="button"
+        (click)="addTab()"
+        class="p-button-secondary mr-2 mb-2"
+      ></button>
+      <p-accordion>
+        <p-accordionTab
+          *ngFor="let tab of panel.tabs; let i = index"
+          [header]="tab.name!!"
+        >
+          <div
+            class="flex justify-content-between flex-column sm:flex-row grid"
+          >
+            <div class="field lg:col-6 md:col md:col">
+              <label htmlFor="source_name"> Name</label>
+              <input
+                pInputText
+                [(ngModel)]="tab.name"
+                [name]="'tab_name' + i"
+                #tab_name="ngModel"
+                required
+              />
+              <p-message
+                severity="error"
+                text="tab name is required"
+                *ngIf="
+                  (tab_name.touched || groupForm.submitted) &&
+                  tab_name.invalid &&
+                  tab_name.hasError('required')
+                "
+              ></p-message>
+            </div>
+
+            <div class="field lg:col-4 md:col">
+              <label htmlFor="source_type">Priority</label>
+
+              <p-inputNumber
+                [(ngModel)]="tab.priority"
+                [name]="'priority'+i"
+                #priority="ngModel"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                spinnerMode="horizontal"
+                inputId="horizontal"
+                decrementButtonClass="p-button-secondary"
+                incrementButtonClass="p-button-secondary"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
+              ></p-inputNumber>
+            </div>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+    <div class="card">
+      <h4>Widget</h4>
+      <button
+        pButton
+        pRipple
+        icon="pi pi-plus"
+        type="button"
+        (click)="addWidget()"
+        class="p-button-secondary mr-2 mb-2"
+      ></button>
+      <p-accordion>
+        <p-accordionTab
+          *ngFor="let widget of panel.widgets; let i = index"
+          [header]="widget.widget_name!!"
+        >
+          <app-add-widget
+            [widget]="widget"
+            [widgetTemplates]="widgetTemplates"
+            [tabs]="panel.tabs!"
+          ></app-add-widget>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      pRipple
+      label="Save"
+      class="mr-2 mb-2"
+      type="submit"
+    ></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      label="Cancel"
+      (click)="ref.close()"
+      class="p-button-secondary mr-2 mb-2"
+    ></button>
+  </div>
+</form>

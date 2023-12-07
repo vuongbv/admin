@@ -1,0 +1,89 @@
+<div class="card">
+  <h5>Groups managerment</h5>
+  <div class="card">
+    <div
+      class="flex justify-content-between flex-column sm:flex-row grid p-fluid"
+    >
+      <div class="field col">
+        <label htmlFor="device_id">Group Name</label>
+        <input
+          pInputText
+          id="name"
+          type="text"
+          name="ngModel"
+          name="name"
+          [(ngModel)]="name"
+        />
+      </div>
+      <div class="field col">
+        <label htmlFor="device_name">Application Name</label>
+        <input
+          pInputText
+          id="application_name"
+          type="text"
+          device_name="ngModel"
+          name="application_name"
+          [(ngModel)]="application_name"
+        />
+      </div>
+    </div>
+    <div class="flex justify-content-between flex-wrap">
+      <div class="flex align-items-center w-4">
+        <button
+          pButton
+          pRipple
+          label="Search"
+          icon="pi pi-search"
+          class="p-button-primary w-4 mr-2"
+          (click)="onSearch()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-plus"
+          label="Add New"
+          styleClass="p-button-text"
+          (click)="addNew()"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <p-table
+    [value]="groups"
+    [paginator]="true"
+    [rows]="10"
+    [totalRecords]="total"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoadTabel($event)"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>App Name</th>
+        <th style="width: 15%">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-group>
+      <tr>
+        <td>{{ group.name }}</td>
+        <td>{{ group.app_name }}</td>
+        <td>
+          <p-button
+            type="button"
+            pRipple
+            icon="pi pi-pencil"
+            styleClass="p-button-rounded p-button-text"
+            (click)="edit(group.id)"
+          ></p-button>
+          <p-button
+            type="button"
+            icon="pi pi-trash"
+            styleClass="p-button-rounded p-button-text p-button-danger"
+            (click)="delete(group.id)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

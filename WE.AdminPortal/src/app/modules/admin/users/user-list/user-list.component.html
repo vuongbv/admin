@@ -1,0 +1,64 @@
+<div class="card">
+  <h5>User Management</h5>
+
+  <button
+    pButton
+    pRipple
+    type="button"
+    icon="pi pi-plus"
+    class="p-button-rounded"
+    class=""
+    (click)="addNew()"
+  >
+    Add New
+  </button>
+  <p-table
+    [value]="users"
+    [paginator]="true"
+    [rows]="10"
+    [totalRecords]="total"
+    [lazy]="true"
+    (onLazyLoad)="lazyLoadTabel($event)"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>       
+      
+        <th>Role</th>
+        <th style="width: 10%">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.email }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+       
+        <td>
+          {{ displayrole(user.roles) }}
+        </td>
+
+        <td>
+          <p-button
+            type="button"
+            pRipple
+            icon="pi pi-pencil"
+            styleClass="p-button-rounded p-button-text"
+            (click)="edit(user.id)"
+          ></p-button>
+          <p-button
+            type="button"
+            pRipple
+            icon="pi 
+              pi-trash"
+            styleClass="p-button-rounded p-button-text p-button-danger"
+            (click)="delete(user.id)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
